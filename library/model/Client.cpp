@@ -56,7 +56,7 @@ bool WaaCaa::Client::CloseChart(const WaaCaa::Chart &chart) const
     if (m_pTcpClient == nullptr) return false;
 
     Request request(1, 2);
-    request.AppendBody((const char *)chart.m_ChartIndex, 1);
+    request.AppendBody((const char *)(&chart.m_ChartIndex), 1);
 
     request.Generate();
 
