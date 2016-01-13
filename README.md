@@ -1,2 +1,2 @@
 # WaaCaa
-WaaCaa's cpp client library.
+[WaaCaa](https://github.com/ImplFancy/WaaCaa)'s cpp client library.
