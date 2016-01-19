@@ -138,10 +138,11 @@ unsigned int WaaCaa::Chart::SendTypeC(const Dimension &dim, const ElemDataType &
     unsigned int dataId = 0;
 
     LinearBuffer response;
-    if (m_pTcpClient->Connect()) {
+    //if (m_pTcpClient->Connect()) 
+    {
         m_pTcpClient->SendBytes(request.GetBuffer(), request.GetBufferLen());
         m_pTcpClient->ReceiveBytes(response);
-        m_pTcpClient->DisConnect();
+        //m_pTcpClient->DisConnect();
         if (*(response.Sub(8).Buffer()) != ResponseType::ALL_RIGHT) {
             return 0;
         }
@@ -154,9 +155,9 @@ unsigned int WaaCaa::Chart::SendTypeC(const Dimension &dim, const ElemDataType &
             tempByte = *(pDataId++); dataId += tempByte;
         }
     }
-    else {
-        return 0;
-    }
+    //else {
+    //    return 0;
+    //}
 
     return dataId;
 }
@@ -170,17 +171,18 @@ bool WaaCaa::Chart::SendTypeC(const unsigned char &subType) const
     request.Generate();
 
     LinearBuffer response;
-    if (m_pTcpClient->Connect()) {
+    //if (m_pTcpClient->Connect())
+    {
         m_pTcpClient->SendBytes(request.GetBuffer(), request.GetBufferLen());
         m_pTcpClient->ReceiveBytes(response);
-        m_pTcpClient->DisConnect();
+        //m_pTcpClient->DisConnect();
         if (*(response.Sub(8).Buffer()) != ResponseType::ALL_RIGHT) {
             return false;
         }
     }
-    else {
-        return false;
-    }
+    //else {
+    //    return false;
+    //}
 
     return true;
 }
@@ -200,17 +202,18 @@ bool WaaCaa::Chart::SendTypeD(const unsigned int &dataId, const unsigned char &d
     request.Generate();
 
     LinearBuffer response;
-    if (m_pTcpClient->Connect()) {
+    //if (m_pTcpClient->Connect()) 
+    {
         m_pTcpClient->SendBytes(request.GetBuffer(), request.GetBufferLen());
         m_pTcpClient->ReceiveBytes(response);
-        m_pTcpClient->DisConnect();
+        //m_pTcpClient->DisConnect();
         if (*(response.Sub(8).Buffer()) != ResponseType::ALL_RIGHT) {
             return false;
         }
     }
-    else {
-        return false;
-    }
+    //else {
+    //    return false;
+    //}
 
     return true;
 }

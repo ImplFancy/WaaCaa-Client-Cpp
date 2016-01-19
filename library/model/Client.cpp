@@ -18,7 +18,13 @@ bool WaaCaa::Client::Connect(const char *host, const int port)
     if (m_pTcpClient != nullptr) delete m_pTcpClient;
     m_pTcpClient = new TcpClient(host, port);
 
-    return true;
+    return m_pTcpClient->Connect();
+}
+
+bool WaaCaa::Client::DisConnect()
+{
+    if (m_pTcpClient == nullptr) return false;
+    return m_pTcpClient->DisConnect();
 }
 
 bool WaaCaa::Client::Connect()
@@ -36,17 +42,18 @@ WaaCaa::Chart * WaaCaa::Client::CreateOneChart(const Chart::MainChartType &type)
     request.Generate();
 
     LinearBuffer response;
-    if (m_pTcpClient->Connect()) {
+    //if (m_pTcpClient->Connect()) 
+    {
         m_pTcpClient->SendBytes(request.GetBuffer(), request.GetBufferLen());
         m_pTcpClient->ReceiveBytes(response);
-        m_pTcpClient->DisConnect();
+        //m_pTcpClient->DisConnect();
         if (*(response.Sub(8).Buffer()) != ResponseType::ALL_RIGHT) {
             return nullptr;
         }
     }
-    else {
-        return nullptr;
-    }
+    //else {
+    //    return nullptr;
+    //}
 
     return new WaaCaa::Chart(m_pTcpClient, type, *(response.Sub(9).Buffer()));
 }
@@ -61,17 +68,18 @@ bool WaaCaa::Client::CloseChart(const WaaCaa::Chart &chart) const
     request.Generate();
 
     LinearBuffer response;
-    if (m_pTcpClient->Connect()) {
+    //if (m_pTcpClient->Connect()) 
+    {
         m_pTcpClient->SendBytes(request.GetBuffer(), request.GetBufferLen());
         m_pTcpClient->ReceiveBytes(response);
-        m_pTcpClient->DisConnect();
+        //m_pTcpClient->DisConnect();
         if (*(response.Sub(8).Buffer()) != ResponseType::ALL_RIGHT) {
             return false;
         }
     }
-    else {
-        return false;
-    }
+    //else {
+    //    return false;
+    //}
 
     return true;
 }
@@ -84,19 +92,26 @@ bool WaaCaa::Client::CloseAllChart()
     request.Generate();
 
     LinearBuffer response;
-    if (m_pTcpClient->Connect()) {
+    //if (m_pTcpClient->Connect()) 
+    {
         m_pTcpClient->SendBytes(request.GetBuffer(), request.GetBufferLen());
         m_pTcpClient->ReceiveBytes(response);
-        m_pTcpClient->DisConnect();
+        //m_pTcpClient->DisConnect();
         if (*(response.Sub(8).Buffer()) != ResponseType::ALL_RIGHT) {
             return false;
         }
     }
-    else {
-        return false;
-    }
+    //else {
+    //    return false;
+    //}
 
     return true;
+}
+
+WaaCaa::Client::~Client()
+{
+    DisConnect();
+    if (m_pTcpClient != nullptr) delete m_pTcpClient;
 }
 
 WaaCaa::Client::Client() :

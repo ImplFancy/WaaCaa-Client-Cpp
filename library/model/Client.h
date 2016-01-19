@@ -14,6 +14,7 @@ namespace WaaCaa
 
         bool Connect();
         bool Connect(const char *host, const int port);
+        bool DisConnect();
 
         Chart *CreateOneChart(const Chart::MainChartType &type) const;
 
@@ -22,6 +23,7 @@ namespace WaaCaa
 
     private:
         Client();
+        ~Client();
 
         TcpClient *m_pTcpClient;
     };
