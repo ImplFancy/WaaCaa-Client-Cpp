@@ -29,6 +29,13 @@ namespace WaaCaa
         bool Circle(const std::vector<float> &datasetX, const std::vector<float> &datasetY, const std::string &legend) const;
         bool Line(const std::vector<float> &datasetX, const std::vector<float> &datasetY, const std::string &legend) const;
 
+
+        // Set the max numbers of dataset
+        bool SetMaxNumbersOfDataset(const unsigned char &num) const;
+        bool SetViewport(const float &top, const float &bottom, const float &left, const float &right) const;
+        bool ViewportHoldOn() const;
+        bool ViewportHoldOff() const;
+
         // Main Chart Type
         enum class MainChartType : unsigned char
         {
@@ -105,6 +112,8 @@ namespace WaaCaa
             _ElemInt8,
             _ElemUInt8
         };
+
+        bool SendTypeB(const unsigned char &subType, const char *attachment, const unsigned int &attachmentLen) const;
 
         bool SendTypeC(const unsigned char &subType) const;
 
