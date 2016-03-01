@@ -582,10 +582,10 @@ namespace Example02
         free(m_pData);
     }
 
-    void OnNewData(short *charData)
+    void OnNewData(short *charData, unsigned int nbChannel)
     {
         for (auto i = 0u; i < frameCnt; i++) {
-            m_pData[i] = (float)charData[i * 2] / 32767;
+            m_pData[i] = (float)charData[i * nbChannel] / 32767;
         }
         m_newDataComing = true;
     }
@@ -617,7 +617,7 @@ int main(int argc, char **argv)
                 unsigned int lenOffset(0);
                 for (; ; ) {
                     auto lenOut = ds.AddPackets((char*)(inputSignal.get()), frameCnt, lenOffset);
-                    OnNewData((short *)((inputSignal.get()) + lenOffset * wavInfo.nbChannel));
+                    OnNewData((short *)((inputSignal.get()) + lenOffset * wavInfo.nbChannel), wavInfo.nbChannel);
                     lenOffset += lenOut;
                     if (lenOut < frameCnt) {
                         break;
