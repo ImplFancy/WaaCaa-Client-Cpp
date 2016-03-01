@@ -61,6 +61,7 @@ int main(int argc, char* argv[])
 {
     if (argc != 2) {
         std::cout << "please infer the path of PCM file (2 channel, 16-bit)" << std::endl;
+        return -1;
     }
 
     using namespace Example02;
