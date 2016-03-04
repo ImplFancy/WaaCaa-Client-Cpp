@@ -10,15 +10,9 @@ bool WaaCaa::Chart::Circle(const std::vector<float> &datasetY, const std::string
     if (datasetY.empty()) return false;
 
     auto len = datasetY.size() * 4;
-    auto p = (const char *)malloc(len);
-    float *pFloatY = (float *)(p + 0);
-    for (auto index = 0u; index < datasetY.size(); index++) {
-        pFloatY[index] = datasetY.at(index);
-    }
 
-    auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat32, len, p);
-    free((void *)p);
-
+    auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat32, len, (const char *)&(datasetY[0]));
+    
     if (dataId == 0) return false;
 
     SendTypeD(dataId, 1);
@@ -40,16 +34,11 @@ bool WaaCaa::Chart::Circle(const std::vector<float> &datasetX, const std::vector
     if (datasetX.size() != datasetY.size()) return false;
 
     auto len = datasetX.size() * 4 * 2;
-    auto p = (const char *)malloc(len);
-    float *pFloatX = (float *)(p + 0);
-    float *pFloatY = (float *)(p + len / 2);
-    for (auto index = 0u; index < datasetX.size(); index++) {
-        pFloatX[index] = datasetX.at(index);
-        pFloatY[index] = datasetY.at(index);
-    }
+    std::vector<char> p(len);
+    memcpy(&(p[0]), &(datasetX[0]), len / 2);
+    memcpy(&(p[len/2]), &(datasetY[0]), len / 2);
 
-    auto dataId = SendTypeC(Dimension::_2D, ElemDataType::_ElemFloat32, len, p);
-    free((void *)p);
+    auto dataId = SendTypeC(Dimension::_2D, ElemDataType::_ElemFloat32, len, &(p[0]));
 
     if (dataId == 0) return false;
 
@@ -62,14 +51,8 @@ bool WaaCaa::Chart::Line(const std::vector<float> &datasetY, const std::string &
     if (datasetY.empty()) return false;
 
     auto len = datasetY.size() * 4;
-    auto p = (const char *)malloc(len);
-    float *pFloatY = (float *)(p + 0);
-    for (auto index = 0u; index < datasetY.size(); index++) {
-        pFloatY[index] = datasetY.at(index);
-    }
 
-    auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat32, len, p);
-    free((void *)p);
+    auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat32, len, (const char*)(&(datasetY[0])));
 
     if (dataId == 0) return false;
 
@@ -113,16 +96,11 @@ bool WaaCaa::Chart::Line(const std::vector<float> &datasetX, const std::vector<f
     if (datasetX.size() != datasetY.size()) return false;
 
     auto len = datasetX.size() * 4 * 2;
-    auto p = (const char *)malloc(len);
-    float *pFloatX = (float *)(p + 0);
-    float *pFloatY = (float *)(p + len / 2);
-    for (auto index = 0u; index < datasetX.size(); index++) {
-        pFloatX[index] = datasetX.at(index);
-        pFloatY[index] = datasetY.at(index);
-    }
+    std::vector<char> p(len);
+    memcpy(&(p[0]), &(datasetX[0]), len / 2);
+    memcpy(&(p[len / 2]), &(datasetY[0]), len / 2);
 
-    auto dataId = SendTypeC(Dimension::_2D, ElemDataType::_ElemFloat32, len, p);
-    free((void *)p);
+    auto dataId = SendTypeC(Dimension::_2D, ElemDataType::_ElemFloat32, len, &(p[0]));
 
     if (dataId == 0) return false;
 
