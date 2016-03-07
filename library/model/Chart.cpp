@@ -4,6 +4,19 @@
 #include "model/ResponseUtils.h"
 #include "network/TcpClient.h"
 
+bool WaaCaa::Chart::Circle(const std::vector<double> &datasetY, const std::string &legend) const
+{
+    if (datasetY.empty()) return false;
+
+    auto len = datasetY.size() * sizeof(double);
+
+    auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat64, len, (const char *)&(datasetY[0]));
+
+    if (dataId == 0) return false;
+
+    SendTypeD(dataId, 1);
+    return true;
+}
 
 bool WaaCaa::Chart::Circle(const std::vector<float> &datasetY, const std::string &legend) const
 {
@@ -13,6 +26,15 @@ bool WaaCaa::Chart::Circle(const std::vector<float> &datasetY, const std::string
 
     auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat32, len, (const char *)&(datasetY[0]));
     
+    if (dataId == 0) return false;
+
+    SendTypeD(dataId, 1);
+    return true;
+}
+
+bool WaaCaa::Chart::Circle(const double *datasetY, const unsigned int nbData, const std::string &legend) const
+{
+    auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat64, nbData * sizeof(double), (char *)datasetY);
     if (dataId == 0) return false;
 
     SendTypeD(dataId, 1);
@@ -43,6 +65,20 @@ bool WaaCaa::Chart::Circle(const std::vector<float> &datasetX, const std::vector
     if (dataId == 0) return false;
 
     SendTypeD(dataId, 1);
+    return true;
+}
+
+bool WaaCaa::Chart::Line(const std::vector<double> &datasetY, const std::string &legend) const
+{
+    if (datasetY.empty()) return false;
+
+    auto len = datasetY.size() * sizeof(double);
+
+    auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat64, len, (const char*)(&(datasetY[0])));
+
+    if (dataId == 0) return false;
+
+    SendTypeD(dataId, 2);
     return true;
 }
 
@@ -82,9 +118,35 @@ bool WaaCaa::Chart::ViewportHoldOff() const
     return SendTypeB(0x31, nullptr, 0u);
 }
 
+bool WaaCaa::Chart::Line(const double *datasetY, const unsigned int nbData, const std::string &legend) const
+{
+    auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat64, nbData * sizeof(double), (char *)datasetY);
+    if (dataId == 0) return false;
+
+    SendTypeD(dataId, 2);
+    return true;
+}
+
 bool WaaCaa::Chart::Line(const float *datasetY, const unsigned int nbData, const std::string &legend) const
 {
     auto dataId = SendTypeC(Dimension::_1D, ElemDataType::_ElemFloat32, nbData * 4, (char *)datasetY);
+    if (dataId == 0) return false;
+
+    SendTypeD(dataId, 2);
+    return true;
+}
+
+bool WaaCaa::Chart::Line(const std::vector<double> &datasetX, const std::vector<double> &datasetY, const std::string &legend) const
+{
+    if (datasetX.size() != datasetY.size()) return false;
+
+    auto len = datasetX.size() * sizeof(double) * 2;
+    std::vector<char> p(len);
+    memcpy(&(p[0]), &(datasetX[0]), len / 2);
+    memcpy(&(p[len / 2]), &(datasetY[0]), len / 2);
+
+    auto dataId = SendTypeC(Dimension::_2D, ElemDataType::_ElemFloat64, len, &(p[0]));
+
     if (dataId == 0) return false;
 
     SendTypeD(dataId, 2);

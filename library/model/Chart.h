@@ -19,14 +19,20 @@ namespace WaaCaa
         }
 
         // 1D data
+        bool Circle(const std::vector<double> &datasetY, const std::string &legend) const;
         bool Circle(const std::vector<float> &datasetY, const std::string &legend) const;
+        bool Circle(const double *datasetY, const unsigned int nbData, const std::string &legend) const;
         bool Circle(const float *datasetY, const unsigned int nbData, const std::string &legend) const;
+        bool Line(const std::vector<double> &datasetY, const std::string &legend) const;
         bool Line(const std::vector<float> &datasetY, const std::string &legend) const;
+        bool Line(const double *datasetY, const unsigned int nbData, const std::string &legend) const;
         bool Line(const float *datasetY, const unsigned int nbData, const std::string &legend) const;
 
 
         // 2D data
+        bool Circle(const std::vector<double> &datasetX, const std::vector<double> &datasetY, const std::string &legend) const;
         bool Circle(const std::vector<float> &datasetX, const std::vector<float> &datasetY, const std::string &legend) const;
+        bool Line(const std::vector<double> &datasetX, const std::vector<double> &datasetY, const std::string &legend) const;
         bool Line(const std::vector<float> &datasetX, const std::vector<float> &datasetY, const std::string &legend) const;
 
 
@@ -61,7 +67,6 @@ namespace WaaCaa
         bool Circle(const float *datasetX, const float *datasetY, const unsigned int datasetLength);
 
         bool Circle(const float *datasetY, const unsigned int datasetLength); // 1D data
-        void Circle(const std::vector<double> &datasetY); // 1D data
         void Circle(const std::vector<float> &datasetY); // 1D data
         void Circle(const std::vector<long> &datasetY); // 1D data
         void Circle(const std::vector<unsigned long> &datasetY); // 1D data
