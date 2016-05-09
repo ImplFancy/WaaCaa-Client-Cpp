@@ -5,11 +5,17 @@
 class TcpClient;
 class Request;
 
+#ifdef WaaCaa_Client_EXPORTS
+#define WaaCaa_Client_API __declspec(dllexport)
+#else
+#define WaaCaa_Client_API __declspec(dllimport)
+#endif
+
 namespace WaaCaa
 {
-
     class Client;
-    class Chart
+
+    class WaaCaa_Client_API Chart
     {
     public:
 
