@@ -4,10 +4,15 @@
 
 class TcpClient;
 
+#ifdef WaaCaa_Client_EXPORTS
+#define WaaCaa_Client_API __declspec(dllexport)
+#else
+#define WaaCaa_Client_API __declspec(dllimport)
+#endif
+
 namespace WaaCaa
 {
-
-    class Client
+    class WaaCaa_Client_API Client
     {
     public:
         static Client &Instance();
